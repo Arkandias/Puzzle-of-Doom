@@ -15,7 +15,7 @@ class UI(Frame):
         for i in range(len(bank.pieceslist)):
             self.images[i].configure(file=bank.pieceslist[i].path)
             if (self.scale is None):
-                self.scale = 32 / self.images[i].width()
+                self.scale = int(self.images[i].width() / 32)
             self.images[i] = self.images[i].subsample(self.scale, self.scale)
             imageLabel = Label(self, image=self.images[i], borderwidth=0, highlightthickness=0)
             imageLabel.grid(row=int(i / 16) + 1, column=i % 16)
