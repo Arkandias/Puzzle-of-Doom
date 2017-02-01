@@ -10,4 +10,5 @@ class Piece:
         self.rightEdge = right
         self.downEdge = down
         self.position = list()
+        self.nbofrightrotate = 0
         self.imgpath = None

@@ -4,6 +4,7 @@ from patternpieces import PatternPieces
 class PiecesBank:
     def __init__(self):
         self.pieceslist = self.createPieces()
+        self.defineImgPath()
 
     def createPieces(self):
         pieceslist = list()
@@ -269,4 +270,5 @@ class PiecesBank:
         return pieceslist
 
     def defineImgPath(self):
-        pass
+        for piece in self.pieceslist:
+            piece.path = "./Eternity/" + str(piece.id) + ".png"
