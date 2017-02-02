@@ -1,16 +1,23 @@
 from tkinter import *
 from glob import glob
+from random import shuffle
 
 class UI(Frame):
-    # def createWidgets(self):
-    #     self.QUIT = Button(self)
-    #     self.QUIT["text"] = "X"
-    #     self.QUIT["fg"]   = "red"
-    #     self.QUIT["command"] =  self.quit
+    def createWidgets(self):
+        self.QUIT = Button(self)
+        self.QUIT["text"] = "Randomize"
+        self.QUIT["fg"]   = "red"
+        self.QUIT["command"] =  self.randomize
 
-    #     self.QUIT.grid(row=17, column=1)
+        self.QUIT.grid(row=17, column=0, columnspan=3)
+
+    def randomize(self):
+        shuffle(self.bank.pieceslist)
+        self.createTable(self.bank)
+        pass
 
     def createTable(self, bank):
+        self.bank = bank
         self.images = [PhotoImage()] * 256
         for i in range(len(bank.pieceslist)):
             self.images[i].configure(file=bank.pieceslist[i].path)
@@ -23,7 +30,6 @@ class UI(Frame):
     def __init__(self):
         master = Tk()
         Frame.__init__(self, master)
-        self.pack()
         self.scale = None
-
-        # self.createWidgets()
+        self.pack()
+        self.createWidgets()
