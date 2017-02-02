@@ -9,8 +9,7 @@ def main():
     print(pb.pieceslist[200].path)
 
     app = UI()
-    app.scale = 3
-    app.createTable(pb)
+    app.createTable(pb.pieceslist)
     app.mainloop()
 
 
