@@ -9,6 +9,7 @@ def main():
     print(pb.pieceslist[200].path)
 
     app = UI()
+    app.preloadPieces(pb.pieceslist)
     app.createTable(pb.pieceslist)
     app.mainloop()
 
