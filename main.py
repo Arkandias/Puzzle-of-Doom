@@ -2,15 +2,18 @@ from patternpieces import PatternPieces
 from piece import Piece
 from piecesbank import PiecesBank
 from ui import UI
+from board import Board
 
 def main():
 
     pb = PiecesBank()
-    print(pb.pieceslist[200].path)
 
     app = UI()
     app.preloadPieces(pb.pieceslist)
-    app.createTable(pb.pieceslist)
+    pb.pieceslist[0].position['x'] = 0
+    pb.pieceslist[0].position['y'] = 0
+    app.placePiece(pb.pieceslist[0])
+    # app.createTable(pb.pieceslist)
     app.mainloop()
 
 
