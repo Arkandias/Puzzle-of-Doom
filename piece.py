@@ -9,6 +9,6 @@ class Piece:
         self.upEdge = up
         self.rightEdge = right
         self.downEdge = down
-        self.position = list()
+        self.position = {"x":None, "y":None}
         self.nbofrightrotate = 0
         self.imgpath = None
