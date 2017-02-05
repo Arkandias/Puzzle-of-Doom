@@ -23,7 +23,7 @@ class UI(Frame):
             self.pImages[pieceslist[x].id] = Image.open(pieceslist[x].path).resize([32, 32])
         self.createTable()
 
-    def createTable(self, pieceslist=None):
+    def createTable(self):
         for i in range(256):
             self.images[i] = ImageTk.PhotoImage(self.pImages['blank'])
             self.labels[i].config(image=self.images[i])
