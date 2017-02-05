@@ -30,8 +30,8 @@ class UI(Frame):
 
     def drawTable(self, board):
         for i in range(256):
-            piece = board[i % 16, i / 16]
-            if (position is None):
+            piece = board[i % 16, int(i / 16)]
+            if (piece is None):
                 continue
             self.placePiece(piece)            
 

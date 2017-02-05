@@ -8,9 +8,11 @@ def main():
 
     pb = PiecesBank()
     app = UI()
+    ### DO NOT FUCKING REMOVE THIS. I DARE YOU. ###
+    app.preloadPieces(pb.pieceslist)
     board = Board()
 
-    app.preloadPieces(pb.pieceslist)
+    ### DO NOT FUCKING REMOVE THIS EITHER. ###
     app.mainloop()
 
 
