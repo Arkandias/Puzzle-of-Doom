@@ -7,3 +7,6 @@ class Board:
 
     def __setitem__(self, key, value):
         self.board[key[0]][key[1]] = value
+
+    def __delitem__(self, key):
+        self.board[key[0]][key[1]] = None

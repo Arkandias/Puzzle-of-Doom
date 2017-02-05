@@ -28,6 +28,13 @@ class UI(Frame):
             self.images[i] = ImageTk.PhotoImage(self.pImages['blank'])
             self.labels[i].config(image=self.images[i])
 
+    def drawTable(self, board):
+        for i in range(256):
+            piece = board[i % 16, i / 16]
+            if (position is None):
+                continue
+            self.placePiece(piece)            
+
     def placePiece(self, piece):
         position = 16 * piece.position['y']+piece.position['x']
         self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(90*piece.nbofrightrotate))
