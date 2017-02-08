@@ -71,17 +71,17 @@ class Arbiter():
                     side = board[x + 1, y].getSidePattern(0)
                     if (side or side != board[x, y].getSidePattern(2)):
                         return False
-                # Checks if top side is an edge
+                # Checks if bottom side is an edge
                 else:
                     if (board[x, y].getSidePattern(2) != PatternPieces.EDGE):
                         return False
 
-                # Checks above cell
+                # Checks previous cell
                 if (x != 0):
                     side = board[x, y - 1].getSidePattern(1)
                     if (side or side != board[x, y].getSidePattern(3)):
                         return False
-                # Checks if top side is an edge
+                # Checks if left side is an edge
                 else:
                     if (board[x, y].getSidePattern(3) != PatternPieces.EDGE):
                         return False
