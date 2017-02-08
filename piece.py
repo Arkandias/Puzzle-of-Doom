@@ -13,12 +13,14 @@ class Piece:
         self.nbofrightrotate = 0
         self.imgpath = None
 
+    def switch(self, x):
+        return {
+            0: self.upEdge,
+            1: self.rightEdge,
+            2: self.downEdge,
+            3: self.leftEdge
+        }.get(x, False)
+
     def getSidePattern(self, rotation):
-        rotation = rotation - self.nbofrightrotate if rotation - self.nbofrightrotate > 0 else rotation - self.nbofrightrotate + 4
-        def switch(x):
-            return {
-                0: self.upEdge,
-                1: self.rightEdge,
-                2: self.downEdge,
-                3: self.leftEdge
-            }.get(x, False)
+        rotation = rotation - self.nbofrightrotate if rotation - self.nbofrightrotate >= 0 else rotation - self.nbofrightrotate + 4
+        return self.switch(rotation)
