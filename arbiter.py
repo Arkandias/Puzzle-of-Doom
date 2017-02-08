@@ -1,6 +1,6 @@
 import ui
 
-class arbiter():
+class Arbiter():
     def numToEdge(self, piece, i):
         if (i == 0):
             return piece.upEdge
@@ -39,3 +39,50 @@ class arbiter():
                                 i + 4 - piece.nbofrightrotate) % 4)):
                     return False
         return True
+
+    def isGoalAchieved(self, board):
+        for y in range(16):
+            for x in range(16):
+                if (board[x, y] is None):
+                    return False
+
+                # Checks above cell
+                if (x != 0):
+                    side = board[x - 1, y].getSidePattern(2)
+                    if (side or side != board[x, y].getSidePattern(0)):
+                        return False
+                # Checks if top side is an edge
+                else:
+                    if (board[x, y].getSidePattern(0) != PatternPieces.EDGE):
+                        return False
+
+                # Checks next cell
+                if (y != 15):
+                    side = board[x, y + 1].getSidePattern(3)
+                    if (side or side != board[x, y].getSidePattern(1)):
+                        return False
+                # Checks if right side is an edge
+                else:
+                    if (board[x, y].getSidePattern(1) != PatternPieces.EDGE):
+                        return False
+
+                # Checks below cell
+                if (x != 15):
+                    side = board[x + 1, y].getSidePattern(0)
+                    if (side or side != board[x, y].getSidePattern(2)):
+                        return False
+                # Checks if top side is an edge
+                else:
+                    if (board[x, y].getSidePattern(2) != PatternPieces.EDGE):
+                        return False
+
+                # Checks above cell
+                if (x != 0):
+                    side = board[x, y - 1].getSidePattern(1)
+                    if (side or side != board[x, y].getSidePattern(3)):
+                        return False
+                # Checks if top side is an edge
+                else:
+                    if (board[x, y].getSidePattern(3) != PatternPieces.EDGE):
+                        return False
+        return True;
