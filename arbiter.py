@@ -47,8 +47,8 @@ class Arbiter():
                     return False
 
                 # Checks above cell
-                if (x != 0):
-                    side = board[x - 1, y].getSidePattern(2)
+                if (y != 0):
+                    side = board[x, y - 1].getSidePattern(2)
                     if (side == False or side != board[x, y].getSidePattern(0)):
                         return False
                 # Checks if top side is an edge
@@ -57,8 +57,8 @@ class Arbiter():
                         return False
 
                 # Checks next cell
-                if (y != 15):
-                    side = board[x, y + 1].getSidePattern(3)
+                if (x != 15):
+                    side = board[x + 1, y].getSidePattern(3)
                     if (side == False or side != board[x, y].getSidePattern(1)):
                         return False
                 # Checks if right side is an edge
@@ -67,8 +67,10 @@ class Arbiter():
                         return False
 
                 # Checks below cell
-                if (x != 15):
-                    side = board[x + 1, y].getSidePattern(0)
+                if (y != 15):
+                    side = board[x, y + 1].getSidePattern(0)
+                    print(side)
+                    print(board[x, y].getSidePattern(2))
                     if (side == False or side != board[x, y].getSidePattern(2)):
                         return False
                 # Checks if bottom side is an edge
@@ -78,7 +80,7 @@ class Arbiter():
 
                 # Checks previous cell
                 if (x != 0):
-                    side = board[x, y - 1].getSidePattern(1)
+                    side = board[x - 1, y].getSidePattern(1)
                     if (side == False or side != board[x, y].getSidePattern(3)):
                         return False
                 # Checks if left side is an edge

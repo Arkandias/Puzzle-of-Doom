@@ -8,7 +8,7 @@ class UI(Frame):
         self.QUIT = Button(self)
         self.QUIT["text"] = "Randomize"
         self.QUIT["fg"]   = "black"
-        self.QUIT["command"] =  self.randomize
+        # self.QUIT["command"] =  self.randomize
 
         self.QUIT.grid(row=18, column=0, columnspan=3)
 
