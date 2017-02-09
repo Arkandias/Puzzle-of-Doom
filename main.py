@@ -12,7 +12,15 @@ def main():
     arbiter = Arbiter()
     board = Board()
 
-    arbiter.isGoalAchieved(board)
+    for y in range(16):
+        for x in range(16):
+            board[x, y] = pb.pieceslist[x + y*16]
+            board[x, y].leftEdge = PatternPieces.EDGE
+            board[x, y].rightEdge = PatternPieces.EDGE
+            board[x, y].upEdge = PatternPieces.EDGE
+            board[x, y].downEdge = PatternPieces.EDGE
+
+    print(arbiter.isGoalAchieved(board))
 
     ### DO NOT FUCKING REMOVE THIS. I DARE YOU. ###
     app.preloadPieces(pb.pieceslist)

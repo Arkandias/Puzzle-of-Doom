@@ -6,7 +6,6 @@ class Board:
         return self.board[key[0] + key[1] * 16]
 
     def __setitem__(self, key, value):
-        print(key)
         value.position['x'] = key[0]
         value.position['y'] = key[1]
         self.board[key[0] + key[1] * 16] = value
