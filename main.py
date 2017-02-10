@@ -20,7 +20,7 @@ def main():
     # arbiter.check_and_place(pb.pieceslist[4], board, 1, 0)
 
     ai = Ai()
-    ai.test_putting_pieces(pb, app, arbiter, board)
+    app.setButtonBehaviour(lambda: ai.test_putting_pieces(pb, app, arbiter, board))
 
     app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###

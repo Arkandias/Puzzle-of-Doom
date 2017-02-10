@@ -8,13 +8,12 @@ class UI(Frame):
         self.QUIT = Button(self)
         self.QUIT["text"] = "Randomize"
         self.QUIT["fg"]   = "black"
-        # self.QUIT["command"] =  self.randomize
+        # self.QUIT["command"] = self.randomize
 
         self.QUIT.grid(row=18, column=0, columnspan=3)
 
-    def randomize(self):
-        shuffle(self.pieceslist)
-        self.createTable()
+    def setButtonBehaviour(self, fn):
+        self.QUIT["command"] = fn
 
     def preloadPieces(self, pieceslist):
         self.pImages = {}
@@ -35,8 +34,8 @@ class UI(Frame):
                 continue
             self.placePiece(piece)            
 
-    def placePiece(self, piece):
-        position = 16 * piece.position['y']+piece.position['x']
+    def placePiece(self, piece, x, y):
+        position = 16 * y + x
         self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(-90*piece.nbofrightrotate))
         self.labels[position].config(image=self.images[position])
 
