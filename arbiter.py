@@ -1,44 +1,59 @@
 from patternpieces import PatternPieces
 
-class Arbiter():
-    def numToEdge(self, piece, i):
-        if (i == 0):
-            return piece.upEdge
-        if (i == 1):
-            return piece.rightEdge
-        if (i == 2):
-            return piece.downEdge
-        return piece.leftEdge
 
-
-    def isPlacmentValid(self, piece, board):
+class Arbiter:
+    #adding x, y because for checking the piece must not be set
+    #Adding True instead of None for walls and keeping none for no piece
+    #TODO Factorises this fonction
+    def is_placement_valid(self, piece, board, x, y):
         nearbyPieces = []
-        if (piece.position['y'] <= 0):
-            nearbyPieces.append(None)
+        mismatch = False
+        if y <= 0:
+            nearbyPieces.append(True)
         else:
-            nearbyPieces.append(board[(piece.position['x']), (piece.position['y'] - 1)])
+            nearbyPieces.append(board[x, y - 1])
 
-        if (piece.position['x'] >= 15):
-            nearbyPieces.append(None)
+        if x >= 15:
+            nearbyPieces.append(True)
         else:
-            nearbyPieces.append(board[(piece.position['x'] + 1), (piece.position['y'])])
+            nearbyPieces.append(board[x + 1, y])
 
-        if (piece.position['x'] >= 15):
-            nearbyPieces.append(None)
+        if y >= 15:
+            nearbyPieces.append(True)
         else:
-            nearbyPieces.append(board[(piece.position['x']), (piece.position['y'] + 1)])
+            nearbyPieces.append(board[x, y + 1])
 
-        if (piece.position['x'] <= 0):
-            nearbyPieces.append(None)
+        if x <= 0:
+            nearbyPieces.append(True)
         else:
-            nearbyPieces.append(board[(piece.position['x'] - 1), (piece.position['y'])])
+            nearbyPieces.append(board[x - 1, y])
+        for rotatetry in range(0, 4):
+            piece.nbofrightrotate = rotatetry
+            for i in range(0, 4):
+                if nearbyPieces[i] is True:
+                    if piece.getSidePattern(i) != PatternPieces.EDGE:
+                        mismatch = True
+                        break
+                elif nearbyPieces[i] is not None:
+                    if nearbyPieces[i].getSidePattern(i - 2) != piece.getSidePattern(i):
+                        mismatch = True
+                        break
+                else:
+                    if piece.getSidePattern(i) == PatternPieces.EDGE:
+                        mismatch = True
+                        break
+            if mismatch is False:
+                return True
+            else:
+                mismatch = False
+        return False
 
-        for i in range(0, 4):
-            if (nearbyPieces[i] is not None):
-               if (self.numToEdge(nearbyPieces[i], (i + 2 + nearbyPieces[i].nbofrightrotate) % 4) != self.numToEdge(piece, (
-                                i + 4 - piece.nbofrightrotate) % 4)):
-                    return False
-        return True
+    def check_and_place(self, piece, board, x, y):
+        if self.is_placement_valid(piece, board, x, y):
+            board[x, y] = piece
+            piece.placed = True
+            return True
+        return False
 
     def isGoalAchieved(self, board):
         for y in range(16):
@@ -87,4 +102,4 @@ class Arbiter():
                 else:
                     if (board[x, y].getSidePattern(3) != PatternPieces.EDGE):
                         return False
-        return True;
+        return True

@@ -4,6 +4,7 @@ from piecesbank import PiecesBank
 from ui import UI
 from board import Board
 from arbiter import Arbiter
+from ai import Ai
 
 def main():
 
@@ -15,6 +16,13 @@ def main():
     arbiter = Arbiter()
     board = Board()
 
+    # arbiter.check_and_place(pb.pieceslist[0], board, 0, 0)
+    # arbiter.check_and_place(pb.pieceslist[4], board, 1, 0)
+
+    ai = Ai()
+    ai.test_putting_pieces(pb, app, arbiter, board)
+
+    app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###
     app.mainloop()
 

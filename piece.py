@@ -9,8 +9,9 @@ class Piece:
         self.upEdge = up
         self.rightEdge = right
         self.downEdge = down
-        self.position = {"x":None, "y":None}
+        self.position = {"x": None, "y": None}
         self.nbofrightrotate = 0
+        self.placed = False
         self.imgpath = None
 
     def switch(self, x):

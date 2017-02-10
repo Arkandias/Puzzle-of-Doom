@@ -37,7 +37,7 @@ class UI(Frame):
 
     def placePiece(self, piece):
         position = 16 * piece.position['y']+piece.position['x']
-        self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(90*piece.nbofrightrotate))
+        self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(-90*piece.nbofrightrotate))
         self.labels[position].config(image=self.images[position])
 
     def __init__(self):
