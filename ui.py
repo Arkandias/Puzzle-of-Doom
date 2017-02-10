@@ -6,13 +6,14 @@ from PIL import Image, ImageTk
 class UI(Frame):
     def createWidgets(self):
         self.QUIT = Button(self)
-        self.QUIT["text"] = "Randomize"
+        self.QUIT["text"] = "Button"
         self.QUIT["fg"]   = "black"
         # self.QUIT["command"] = self.randomize
 
         self.QUIT.grid(row=18, column=0, columnspan=3)
 
-    def setButtonBehaviour(self, fn):
+    def setButtonBehaviour(self, name, fn):
+        self.QUIT["text"] = name
         self.QUIT["command"] = fn
 
     def preloadPieces(self, pieceslist):
