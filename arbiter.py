@@ -55,6 +55,10 @@ class Arbiter:
             return True
         return False
 
+    def just_place(self, piece, board, x, y):
+        board[x, y] = piece
+        piece.placed = True
+
     def isGoalAchieved(self, board):
         for y in range(16):
             for x in range(16):

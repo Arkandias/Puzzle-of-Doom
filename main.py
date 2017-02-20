@@ -5,6 +5,7 @@ from ui import UI
 from board import Board
 from arbiter import Arbiter
 from ai import Ai
+import random
 
 def main():
 
@@ -20,7 +21,7 @@ def main():
     # arbiter.check_and_place(pb.pieceslist[4], board, 1, 0)
 
     ai = Ai()
-    app.setButtonBehaviour("Start AI", lambda: ai.test_putting_pieces(pb, app, arbiter, board))
+    app.setButtonBehaviour("Start AI", lambda: ai.main_function(pb, app, arbiter, board))
 
     app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###
