@@ -74,19 +74,19 @@ class Arbiter:
                     if board[x, y].downEdge == board[x, y + 1].upEdge:
                         nb_match += 1
                 else:
-                    if board[x, y].upEdge == PatternPieces.EDGE:
+                    if board[x, y].downEdge == PatternPieces.EDGE:
                         nb_match += 1
                 if x > 0:
                     if board[x, y].leftEdge == board[x - 1, y].rightEdge:
                         nb_match += 1
                 else:
-                    if board[x, y].upEdge == PatternPieces.EDGE:
+                    if board[x, y].leftEdge == PatternPieces.EDGE:
                         nb_match += 1
                 if x < 15:
                     if board[x, y].rightEdge == board[x, y].leftEdge:
                         nb_match += 1
                 else:
-                    if board[x, y].upEdge == PatternPieces.EDGE:
+                    if board[x, y].rightEdge == PatternPieces.EDGE:
                         nb_match += 1
 
 
