@@ -4,7 +4,7 @@ from patternpieces import PatternPieces
 class Arbiter:
     #adding x, y because for checking the piece must not be set
     #Adding True instead of None for walls and keeping none for no piece
-    #TODO Factorises this fonction
+    #TODO Factorize this fonction
     def is_placement_valid(self, piece, board, x, y):
         nearbyPieces = []
         mismatch = False
@@ -58,6 +58,37 @@ class Arbiter:
     def just_place(self, piece, board, x, y):
         board[x, y] = piece
         piece.placed = True
+
+    #TODO: Factorize
+    def nb_edge_match(self, board):
+        nb_match = 0
+        for y in range(16):
+            for x in range(16):
+                if y > 0:
+                    if board[x, y].upEdge == board[x, y - 1].downEdge:
+                        nb_match += 1
+                else:
+                    if board[x, y].upEdge == PatternPieces.EDGE:
+                        nb_match += 1
+                if y < 15:
+                    if board[x, y].downEdge == board[x, y + 1].upEdge:
+                        nb_match += 1
+                else:
+                    if board[x, y].upEdge == PatternPieces.EDGE:
+                        nb_match += 1
+                if x > 0:
+                    if board[x, y].leftEdge == board[x - 1, y].rightEdge:
+                        nb_match += 1
+                else:
+                    if board[x, y].upEdge == PatternPieces.EDGE:
+                        nb_match += 1
+                if x < 15:
+                    if board[x, y].rightEdge == board[x, y].leftEdge:
+                        nb_match += 1
+                else:
+                    if board[x, y].upEdge == PatternPieces.EDGE:
+                        nb_match += 1
+
 
     def isGoalAchieved(self, board):
         for y in range(16):
