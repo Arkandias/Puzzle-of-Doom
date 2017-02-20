@@ -88,6 +88,7 @@ class Arbiter:
                 else:
                     if board[x, y].rightEdge == PatternPieces.EDGE:
                         nb_match += 1
+        return nb_match
 
 
     def isGoalAchieved(self, board):

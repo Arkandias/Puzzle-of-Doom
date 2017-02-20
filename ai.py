@@ -14,18 +14,11 @@ class Ai:
                         app.update()
                         break
                 # app.drawTable(board)
+
     def reset_pieces(self, pb, app, arbiter, board):
         for i in range(256):
             pb.pieceslist[i].nbofrightrotate = 0
             pb.pieceslist[i].placed = False
-
-    def check_nb_match(self, pb, app, arbiter, board):
-        nb_match = 0
-        for y in range(16):
-            for x in range(16):
-                if (arbiter.is_placement_valid(board[x, y], board, x, y) == True):
-                    nb_match += 1
-        print ("nbMatch:" + str(nb_match))
 
     def full_random_putting_pieces(self, pb, app, arbiter, board):
         for y in range(16):
@@ -53,5 +46,5 @@ class Ai:
     def main_function(self, pb, app, arbiter, board):
         for i in range (100):
             self.full_random_putting_pieces(pb, app, arbiter, board)
-            self.check_nb_match(pb, app, arbiter, board)
+            print(arbiter.nb_edge_match(board))
             self.reset_pieces(pb, app, arbiter, board)
