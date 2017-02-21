@@ -1,5 +1,6 @@
 import random
 import copy
+import operator
 
 class Ai:
     def __init__(self):
@@ -38,27 +39,66 @@ class Ai:
                 rot = random.randint(0, 3)
                 list_no_placed[piecesnb].nbofrightrotate = rot
                 arbiter.just_place(list_no_placed[piecesnb], board, x, y)
-                app.placePiece(board[x, y], x, y)
-                app.update()
+                #app.placePiece(board[x, y], x, y)
+                #app.update()
                 #break
                     # app.drawTable(board)
 
 
     def main_function(self, pb, app, arbiter, board):
         boards = list()
-        rot = list()
+
         res = int()
-        list_of_boards = [boards, rot, res]
+        list_of_boards = []
 
         for i in range (100):
             self.full_random_putting_pieces(pb, app, arbiter, board)
             result = arbiter.nb_edge_match(board)
-            print(result)
+            rot = list()
+            for j in range(0,256):
+                rot.append(board[int(j % 16), int(j / 16)].nbofrightrotate)
+
             list_board = copy.deepcopy(board)
-            lists = [list_board, list_board, result]
+
+            lists = [list_board, rot, result]
             list_of_boards.append(lists)
             self.reset_pieces(pb, app, arbiter, board)
 
-        for i in list_of_boards:
-            print (i)
 
+
+        list_of_boards.sort(key=operator.itemgetter(2), reverse=True)
+
+        list_of_boards2_nd_gen = []
+
+        for i in range(100):
+            mate1 = random.randint(0, 5)
+            mate2 = random.randint(0, 4)
+
+            new_board = copy.deepcopy(list_of_boards[mate1][0])
+
+            for j in range(256):
+                if (random.randint(0, 1) == 1):
+                    boardtmp = list_of_boards[mate2][0]
+                    pos_piece1 = self.findPiece(boardtmp[int(j % 16), int(j / 16)], list_of_boards[mate1][0])
+
+                    piece_tmp = new_board[int(j % 16), int(j / 16)]
+                    new_board[int(j % 16), int(j / 16)] = new_board[int(pos_piece1 % 16), int(pos_piece1 / 16)]
+                    new_board[int(pos_piece1 % 16), int(pos_piece1 / 16)] = piece_tmp
+
+                    #new_board[int(j % 16), int(j / 16)] = list_of_boards[mate2][0][int(j % 16), int(j / 16)]
+                    #new_board[int(j % 16), int(j / 16)].nbofrightrotate = list_of_boards[mate2][1][(j % 16) + (j * 16)]
+            result = arbiter.nb_edge_match(new_board)
+            rot = list()
+            for j in range(0, 256):
+                rot.append(new_board[int(j % 16), int(j / 16)].nbofrightrotate)
+            lists = [new_board, rot, result]
+            list_of_boards2_nd_gen.append(lists)
+
+        list_of_boards2_nd_gen.sort(key=operator.itemgetter(2), reverse=True)
+
+        app.drawTable(list_of_boards2_nd_gen[0][0])
+
+    def findPiece(self, piece, board):
+        for x in range(256):
+            if (board[int(x % 16), int(x / 16)].id == piece.id):
+                    return (x)
