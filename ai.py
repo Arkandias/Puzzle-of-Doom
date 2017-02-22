@@ -8,6 +8,11 @@ class Ai:
     def __init__(self):
         pass
 
+    def Breed(self, pb, app, board):
+        if ():
+            pass
+        pass
+
     def test_putting_pieces(self, pb, app, arbiter, board):
         for y in range(16):
             for x in range(16):
