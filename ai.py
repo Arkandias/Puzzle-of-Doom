@@ -190,32 +190,34 @@ class Ai:
         nb_mutation = 20
         nb_fitness = 128
         nb_tab = 100
+        nb_very_best_value_save = 3
 
         list_of_random_boards = self.create_random_boards(pb, app, arbiter, board, nb_boards)
         list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
         gen = 0
 
-        for j in range (1000):
+        for j in range(1000):
             gen += 1
-            list_of_crossover_boards = self.crossover(pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection)
+            list_of_crossover_boards = self.crossover(pb, app, board, arbiter, list_of_random_boards, nb_fitness,
+                                                      nb_tab, nb_selection)
             list_of_crossover_boards.sort(key=operator.itemgetter(2), reverse=True)
 
             self.set_pieces_to_rot(list_of_crossover_boards[0][1], pb)
             app.drawTable(list_of_crossover_boards[0][0])
             app.update()
-            #print(list_of_crossover_boards[0][2])
+            # print(list_of_crossover_boards[0][2])
 
-            list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_crossover_boards, nb_mutation, nb_selection)
+            list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_crossover_boards, nb_mutation,
+                                                             nb_selection)
             list_of_mutated_boards.sort(key=operator.itemgetter(2), reverse=True)
-
 
             self.set_pieces_to_rot(list_of_mutated_boards[0][1], pb)
             app.drawTable(list_of_mutated_boards[0][0])
             app.update()
-            #print(list_of_mutated_boards[0][2])
+            # print(list_of_mutated_boards[0][2])
 
             best_of_lists = []
-            for i in range (nb_boards):
+            for i in range(nb_very_best_value_save):
                 best_of_lists.append(list_of_random_boards[i])
             for i in range(nb_tab):
                 best_of_lists.append(list_of_crossover_boards[i])
@@ -228,32 +230,34 @@ class Ai:
             app.drawTable(best_of_lists[0][0])
             app.update()
             print("Best score: " + str(best_of_lists[0][2]) + " at the gen n:" + str(gen))
+            for i in range(9):
+                print(str(i + 1) + " best score: " + str(best_of_lists[i + 1][2]) + " at the gen n:" + str(gen))
 
             list_of_random_boards = best_of_lists
 
-        # end of debug
+            # end of debug
 
-        #end of crossover
+            # end of crossover
 
-        #mutation time
+            # mutation time
 
-       #  list_of_mutated = []
-        #for i in range(100):
-        #    rand = random.randint(0, 10)
-         #   boards = list_of_boards2_nd_gen[rand]
-#
- #           board_to_append = copy.deepcopy(boards)
-  #          for j in range (5):
-   #             self.mutate_board_swap(board_to_append[0])
-    #            self.mutate_swap_turn_tab(board_to_append[1])
-#
- #           self.set_pieces_to_rot(board_to_append[1], pb)
-  #          board_to_append[2] = arbiter.nb_edge_match(board_to_append[0])
-   #         list_of_mutated.append(board_to_append)
-        #end of mutation
+            #  list_of_mutated = []
+            # for i in range(100):
+            #    rand = random.randint(0, 10)
+            #   boards = list_of_boards2_nd_gen[rand]
+            #
+            #           board_to_append = copy.deepcopy(boards)
+            #          for j in range (5):
+            #             self.mutate_board_swap(board_to_append[0])
+            #            self.mutate_swap_turn_tab(board_to_append[1])
+            #
+            #           self.set_pieces_to_rot(board_to_append[1], pb)
+            #          board_to_append[2] = arbiter.nb_edge_match(board_to_append[0])
+            #         list_of_mutated.append(board_to_append)
+            # end of mutation
 
-     #   list_of_mutated.sort(key=operator.itemgetter(2), reverse=True)
-        # debug prints
+            #   list_of_mutated.sort(key=operator.itemgetter(2), reverse=True)
+            # debug prints
 
 
     def findPiece(self, piece, board):

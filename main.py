@@ -18,7 +18,7 @@ def main():
     arbiter = Arbiter()
     board = Board()
 
-    app.setBatchMethod(lambda : ai.Breed(pb, app, board))
+    app.setBatchMethod(lambda : ai.main_function(pb, app, arbiter, board))
     app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###
     app.mainloop()
