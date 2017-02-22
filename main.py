@@ -14,19 +14,11 @@ def main():
     app = UI()
     ### DO NOT FUCKING REMOVE THIS. I DARE YOU. ###
     app.preloadPieces(pb.pieceslist)
-
+    ai = Ai()
     arbiter = Arbiter()
     board = Board()
 
-    # print(json.dumps(generatedSolvedPuzzle(pb).board))
-    print(generatedSolvedPuzzle(pb).__dict__)
-
-    # arbiter.check_and_place(pb.pieceslist[0], board, 0, 0)
-    # arbiter.check_and_place(pb.pieceslist[4], board, 1, 0)
-
-    # ai = Ai()
-    # app.setButtonBehaviour("Start AI", lambda: ai.main_function(pb, app, arbiter, board))
-
+    app.setBatchMethod(lambda : ai.Breed(pb, app, board))
     app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###
     app.mainloop()

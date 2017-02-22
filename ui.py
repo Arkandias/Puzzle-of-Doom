@@ -5,16 +5,26 @@ from PIL import Image, ImageTk
 
 class UI(Frame):
     def createWidgets(self):
-        self.QUIT = Button(self)
-        self.QUIT["text"] = "Button"
-        self.QUIT["fg"]   = "black"
-        # self.QUIT["command"] = self.randomize
+        self.BATCHINPUT = Entry(self)
+        self.BATCHINPUT.focus_set()
+        self.BATCHINPUT.grid(row=19, column=0, columnspan=4)
 
-        self.QUIT.grid(row=18, column=0, columnspan=3)
+        self.BATCH = Button(self)
+        self.BATCH["text"] = "Generation batch"
+        self.BATCH["fg"]   = "black"
+        self.BATCH["command"] = self.startBatch
+        self.BATCH.grid(row=18, column=0, columnspan=4)
 
-    def setButtonBehaviour(self, name, fn):
-        self.QUIT["text"] = name
-        self.QUIT["command"] = fn
+    def startBatch(self):
+        loop = 1
+        if self.BATCHINPUT.get() != '':
+            loop = int(self.BATCHINPUT.get())
+        if (self.batchMethod):
+            for x in range(loop):
+                self.batchMethod()
+
+    def setBatchMethod(self, fn):
+        self.batchMethod = fn
 
     def preloadPieces(self, pieceslist):
         self.pImages = {}
@@ -41,8 +51,8 @@ class UI(Frame):
         self.labels[position].config(image=self.images[position])
 
     def __init__(self):
-        master = Tk()
-        Frame.__init__(self, master)
+        self.master = Tk()
+        Frame.__init__(self, self.master)
         self.images = [0] * 256
         self.pImages = None
         self.labels = []
