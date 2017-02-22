@@ -193,15 +193,17 @@ class Ai:
 
         list_of_random_boards = self.create_random_boards(pb, app, arbiter, board, nb_boards)
         list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
+        gen = 0
 
-        for j in range (1000): #pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection):
+        for j in range (1000):
+            gen += 1
             list_of_crossover_boards = self.crossover(pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection)
             list_of_crossover_boards.sort(key=operator.itemgetter(2), reverse=True)
 
             self.set_pieces_to_rot(list_of_crossover_boards[0][1], pb)
             app.drawTable(list_of_crossover_boards[0][0])
             app.update()
-            print(list_of_crossover_boards[0][2])
+            #print(list_of_crossover_boards[0][2])
 
             list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_crossover_boards, nb_mutation, nb_selection)
             list_of_mutated_boards.sort(key=operator.itemgetter(2), reverse=True)
@@ -210,9 +212,24 @@ class Ai:
             self.set_pieces_to_rot(list_of_mutated_boards[0][1], pb)
             app.drawTable(list_of_mutated_boards[0][0])
             app.update()
-            print(list_of_mutated_boards[0][2])
+            #print(list_of_mutated_boards[0][2])
 
-            list_of_random_boards = list_of_mutated_boards
+            best_of_lists = []
+            for i in range (nb_boards):
+                best_of_lists.append(list_of_random_boards[i])
+            for i in range(nb_tab):
+                best_of_lists.append(list_of_crossover_boards[i])
+            for i in range(nb_mutation):
+                best_of_lists.append(list_of_mutated_boards[i])
+            best_of_lists.sort(key=operator.itemgetter(2), reverse=True)
+            best_of_lists[:nb_boards]
+
+            self.set_pieces_to_rot(best_of_lists[0][1], pb)
+            app.drawTable(best_of_lists[0][0])
+            app.update()
+            print("Best score: " + str(best_of_lists[0][2]) + " at the gen n:" + str(gen))
+
+            list_of_random_boards = best_of_lists
 
         # end of debug
 
