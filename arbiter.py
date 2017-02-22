@@ -59,6 +59,39 @@ class Arbiter:
         board[x, y] = piece
         piece.placed = True
 
+    def nb_edge_piece(self, board, x, y):
+        nb_match = 0
+        if (board[x, y] is not None):
+            if y > 0:
+                if (board[x, y - 1] is not None):
+                    if board[x, y].getSidePattern(0) == board[x, y - 1].getSidePattern(2):
+                        nb_match += 1
+            else:
+                if board[x, y].getSidePattern(0) == PatternPieces.EDGE:
+                    nb_match += 1
+            if y < 15:
+                if (board[x, y + 1] is not None):
+                    if board[x, y].getSidePattern(2) == board[x, y + 1].getSidePattern(0):
+                        nb_match += 1
+            else:
+                if board[x, y].getSidePattern(2) == PatternPieces.EDGE:
+                    nb_match += 1
+            if x > 0:
+                if (board[x - 1, y] is not None):
+                    if board[x, y].getSidePattern(3) == board[x - 1, y].getSidePattern(1):
+                        nb_match += 1
+            else:
+                if board[x, y].getSidePattern(3) == PatternPieces.EDGE:
+                    nb_match += 1
+            if x < 15:
+                if (board[x + 1, y] is not None):
+                    if board[x, y].getSidePattern(1) == board[x + 1, y].getSidePattern(3):
+                        nb_match += 1
+            else:
+                if board[x, y].getSidePattern(1) == PatternPieces.EDGE:
+                    nb_match += 1
+        return nb_match
+
     #TODO: Factorize
     def nb_edge_match(self, board):
         nb_match = 0
