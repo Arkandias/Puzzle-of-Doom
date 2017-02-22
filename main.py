@@ -5,6 +5,7 @@ from ui import UI
 from board import Board
 from arbiter import Arbiter
 from ai import Ai
+import json
 import random
 
 def main():
@@ -17,11 +18,14 @@ def main():
     arbiter = Arbiter()
     board = Board()
 
+    # print(json.dumps(generatedSolvedPuzzle(pb).board))
+    print(generatedSolvedPuzzle(pb).__dict__)
+
     # arbiter.check_and_place(pb.pieceslist[0], board, 0, 0)
     # arbiter.check_and_place(pb.pieceslist[4], board, 1, 0)
 
-    ai = Ai()
-    app.setButtonBehaviour("Start AI", lambda: ai.main_function(pb, app, arbiter, board))
+    # ai = Ai()
+    # app.setButtonBehaviour("Start AI", lambda: ai.main_function(pb, app, arbiter, board))
 
     app.drawTable(board)
     ### DO NOT FUCKING REMOVE THIS EITHER. ###

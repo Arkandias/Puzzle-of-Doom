@@ -45,20 +45,20 @@ class Ai:
 
 
     def main_function(self, pb, app, arbiter, board):
-        boards = list()
-        rot = list()
-        res = int()
-        list_of_boards = [boards, rot, res]
+        # boards = list()
+        # rot = list()
+        # res = int()
+        list_of_boards = []
 
-        for i in range (100):
+        for i in range (10):
             self.full_random_putting_pieces(pb, app, arbiter, board)
             result = arbiter.nb_edge_match(board)
-            print(result)
+            # print(result)
             list_board = copy.deepcopy(board)
             lists = [list_board, list_board, result]
             list_of_boards.append(lists)
             self.reset_pieces(pb, app, arbiter, board)
 
         for i in list_of_boards:
-            print (i)
+            print (i[0])
 

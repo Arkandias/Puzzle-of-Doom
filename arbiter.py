@@ -120,8 +120,6 @@ class Arbiter:
                 # Checks below cell
                 if (y != 15):
                     side = board[x, y + 1].getSidePattern(0)
-                    print(side)
-                    print(board[x, y].getSidePattern(2))
                     if (side == False or side != board[x, y].getSidePattern(2)):
                         return False
                 # Checks if bottom side is an edge
