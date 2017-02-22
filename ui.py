@@ -33,7 +33,7 @@ class UI(Frame):
             piece = board[i % 16, int(i / 16)]
             if (piece is None):
                 continue
-            self.placePiece(piece)            
+            self.placePiece(piece, i % 16, int(i / 16))
 
     def placePiece(self, piece, x, y):
         position = 16 * y + x
