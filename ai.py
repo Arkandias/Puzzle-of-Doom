@@ -2,6 +2,8 @@ import random
 import copy
 import operator
 
+from board import Board
+
 class Ai:
     def __init__(self):
         pass
@@ -54,6 +56,85 @@ class Ai:
         print(arbiter.nb_edge_match(list_board))
         app.drawTable(list_board)
 
+    def crossover(self, pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection):
+        list_of_crossover = []
+
+        for i in range (nb_tab):
+            rand1 = random.randint(0, nb_selection)
+            rand2 = random.randint(0, nb_selection - 1)
+
+            if (rand1 == rand2):
+                rand2 = rand2 + 1
+
+            self.set_pieces_to_rot(list_of_random_boards[rand1][1], pb)
+            list1 = self.best_fitnet_board(arbiter, list_of_random_boards[rand1][0], nb_fitness)
+
+            self.set_pieces_to_rot(list_of_random_boards[rand2][1], pb)
+            list2 = self.best_fitnet_board(arbiter, list_of_random_boards[rand2][0], nb_fitness)
+
+            rot_son = []
+            board_son = Board()
+            for i in range (256):
+                pb.pieceslist[i].placed = False
+                #board_son[int(i % 16), int(i / 16)] = None
+                rot_son.append(0)
+
+            board1 = list_of_random_boards[rand1][0]
+            rot1 = list_of_random_boards[rand1][1]
+            for i in range (nb_fitness):
+                x = int(list1[i][0] % 16)
+                y = int(list1[i][0] / 16)
+                board_son[x, y] = board1[x, y]
+                board_son[x, y].placed = True
+                rot_son[int(x % 16 + y * 16)] = rot1[int(x % 16 + y * 16)]
+
+
+
+            board2 = list_of_random_boards[rand2][0]
+            rot2 = list_of_random_boards[rand2][1]
+            for i in range (nb_fitness):
+                x = int(list2[i][0] % 16)
+                y = int(list2[i][0] / 16)
+                if (board_son[x, y] is not None):
+                    board_son[x, y] = board2[x, y]
+                    board_son[x, y].placed = True
+                    rot_son[int(x % 16 + y * 16)] = rot2[int(x % 16 + y * 16)]
+
+
+            nb_lel = 0
+            for i in range (256):
+                if (board_son[i % 16, int(i/16)] is None):
+                    nb_lel += 1
+                    list_no_placed = [x for x in pb.pieceslist if x.placed is False]
+                    unplaced_pieces = len(list_no_placed)
+                    if (unplaced_pieces == 0):
+                        print("placed all")
+                        continue
+                    if (unplaced_pieces == 1):
+                        piecesnb = 0
+                    else:
+                        piecesnb = random.randint(0, unplaced_pieces - 1)
+                    rot = random.randint(0, 3)
+                    board_son[i % 16, int(i / 16)] = list_no_placed[piecesnb]
+                    board_son[i % 16, int(i / 16)].placed = True
+                    rot_son[i] = rot
+
+
+            self.set_pieces_to_rot(rot_son, pb)
+            list_of_crossover.append([board_son, rot_son, arbiter.nb_edge_match(board_son)])
+        return list_of_crossover
+
+
+    def best_fitnet_board(self, arbiter, board, nb_best):
+        list_of_best = []
+        for i in range(256):
+            list_of_best.append([i, arbiter.nb_edge_piece(board, i % 16, int(i / 16))])
+        list_of_best.sort(key=operator.itemgetter(1), reverse=True)
+        list_of_best[:nb_best]
+
+
+
+        return list_of_best
 
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
         list_of_mutated = []
@@ -92,7 +173,9 @@ class Ai:
             self.reset_pieces(pb, app, arbiter, board_c)
 
 
+
         return list_of_boards
+
 
 
     def main_function(self, pb, app, arbiter, board):
@@ -100,19 +183,31 @@ class Ai:
         nb_boards = 100
         nb_selection = 10
         nb_mutation = 20
+        nb_fitness = 128
+        nb_tab = 100
 
         list_of_random_boards = self.create_random_boards(pb, app, arbiter, board, nb_boards)
         list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
 
+        for j in range (1000): #pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection):
+            list_of_crossover_boards = self.crossover(pb, app, board, arbiter, list_of_random_boards, nb_fitness, nb_tab, nb_selection)
+            list_of_crossover_boards.sort(key=operator.itemgetter(2), reverse=True)
+
+            self.set_pieces_to_rot(list_of_crossover_boards[0][1], pb)
+            app.drawTable(list_of_crossover_boards[0][0])
+            app.update()
+            print(list_of_crossover_boards[0][2])
+
+            list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_crossover_boards, nb_mutation, nb_selection)
+            list_of_mutated_boards.sort(key=operator.itemgetter(2), reverse=True)
 
 
-        list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_random_boards, nb_mutation, nb_selection)
-        list_of_mutated_boards.sort(key=operator.itemgetter(2), reverse=True)
+            self.set_pieces_to_rot(list_of_mutated_boards[0][1], pb)
+            app.drawTable(list_of_mutated_boards[0][0])
+            app.update()
+            print(list_of_mutated_boards[0][2])
 
-
-        print(list_of_mutated_boards[0])
-        self.set_pieces_to_rot(list_of_mutated_boards[0][1], pb)
-        app.drawTable(list_of_mutated_boards[0][0])
+            list_of_random_boards = list_of_mutated_boards
 
         # end of debug
 
