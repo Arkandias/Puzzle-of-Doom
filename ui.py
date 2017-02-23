@@ -15,13 +15,33 @@ class UI(Frame):
         self.BATCH["command"] = self.startBatch
         self.BATCH.grid(row=18, column=0, columnspan=4)
 
+        self.LABELFITNESS = Label(self, text="Top fitness %")
+        self.LABELFITNESS.grid(row=18, column=4, columnspan=3)
+
+        self.FITNESSINPUT = Entry(self, width=3)
+        self.FITNESSINPUT.insert(0, '50')
+        self.FITNESSINPUT.grid(row=19, column=4, columnspan=3)
+
+        self.LABELMUTATION = Label(self, text="Mutation %")
+        self.LABELMUTATION.grid(row=18, column=10, columnspan=3)
+
+        self.MUTATIONINPUT = Entry(self, width=3)
+        self.MUTATIONINPUT.insert(0, '5')
+        self.MUTATIONINPUT.grid(row=19, column=10, columnspan=3)
+
     def startBatch(self):
         loop = 1
+        fitness = 50
+        mutation = 5
         if self.BATCHINPUT.get() != '':
             loop = int(self.BATCHINPUT.get())
+        if self.FITNESSINPUT.get() != '':
+            fitness = int(self.FITNESSINPUT.get())
+        if self.MUTATIONINPUT.get() != '':
+            mutation = int(self.MUTATIONINPUT.get())
         if (self.batchMethod):
             for x in range(loop):
-                self.batchMethod()
+                self.batchMethod(fitness, mutation)
 
     def setBatchMethod(self, fn):
         self.batchMethod = fn
