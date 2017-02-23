@@ -148,16 +148,22 @@ class Ai:
         for x in range(16):
             y_tab = []
             for y in range(16):
-                y_tab.append(board[x, y].id)
+                if (board[x, y] is not None):
+                    y_tab.append(board[x, y].id)
+                else:
+                    y_tab.append(0)
             x_tab.append(y_tab)
-
         return x_tab
 
     def change_id_to_board(self, id, pb):
         board = Board()
         for x in range(16):
             for y in range(16):
-                board[x, y] = pb.pieceslist[id[x][y] + 1]
+                if (id[x][y] == 0):
+                    board[x, y] = pb.pieceslist[0]
+                else:
+                    board[x, y] = pb.pieceslist[id[x][y] - 1]
+        return board
 
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
         list_of_mutated = []
@@ -203,12 +209,11 @@ class Ai:
         return list_of_boards
 
 
-    def main_function(self, pb, app, arbiter, board):
-
+    def main_function(self, pb, app, arbiter, board, loop, fitness, mutation):
         nb_boards = 100
         nb_selection = 10
         nb_mutation = 100
-        nb_fitness = 128
+        nb_fitness = int (256 * fitness / 100)
         nb_tab = 100
         nb_very_best_value_save = 3
 
@@ -216,7 +221,7 @@ class Ai:
         list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
         gen = 0
 
-        for j in range(1000):
+        for j in range(loop):
             gen += 1
             list_of_crossover_boards = self.crossover(pb, app, board, arbiter, list_of_random_boards, nb_fitness,
                                                       nb_tab, nb_selection)
