@@ -1,17 +1,61 @@
 import random
 import copy
 import operator
+from board import Board
 
 from board import Board
 
 class Ai:
-    def __init__(self):
-        pass
 
-    def Breed(self, pb, app, board):
-        if ():
-            pass
-        pass
+    def __init__(self):
+        self.placedPieces = []
+        self.unplacedPieces = []
+        self.gennumber = 0
+        self.board = Board()
+
+    def Breed(self, pb, app, arbiter):
+        self.gennumber += 1
+        print("Generation number : " + str(self.gennumber))
+        if (len(self.board.getEmptyCells()) == 256): # Creating list of piece to place
+            self.unplacedPieces = copy.deepcopy(pb.pieceslist)
+        else:
+        # Removing half of bad previous pieces
+            self.unplacedPieces = self.placedPieces[128:]
+            self.placedPieces = self.placedPieces[:128]
+            for x in range(128):
+                del self.board[self.unplacedPieces[x].position['x'], self.unplacedPieces[x].position['y']]
+
+        # Mutation
+            for x in range(4):
+                placedpiece = random.randint(0, 127)
+                unplacedpiece = random.randint(0, 127)
+                tmp = self.unplacedPieces[unplacedpiece]
+                self.board[self.placedPieces[placedpiece].position['x'], self.placedPieces[placedpiece].position['y']] = self.unplacedPieces[unplacedpiece]
+                self.unplacedPieces[unplacedpiece] = self.placedPieces[placedpiece]
+                self.placedPieces[placedpiece] = tmp
+
+        # Placing
+        for x in range(len(self.unplacedPieces)):
+            rot = random.randint(0, 3)
+            self.unplacedPieces[x].nbofrightrotate = rot
+            emptyCells = self.board.getEmptyCells()
+            cell = random.randint(0, len(emptyCells) - 1)
+            self.board.board[emptyCells[cell]] = self.unplacedPieces[x]
+            self.placedPieces.append(self.unplacedPieces[x])
+            self.placedPieces[-1].position = {"x": int(emptyCells[cell] % 16), "y": int(emptyCells[cell] / 16)}
+
+        # Computing fitness
+        totalFitness = 0
+        for x in range(256):
+            self.placedPieces[x].fitness = arbiter.nb_edge_piece(self.board, self.placedPieces[x].position['x'], self.placedPieces[x].position['y'])
+            totalFitness += self.placedPieces[x].fitness
+        
+        print("Total fitness : " + str(totalFitness))
+        # Sorting fitness
+        self.placedPieces.sort(key=lambda x: x.fitness, reverse=True)
+
+        app.drawTable(self.board)
+        unplacedPieces = []
 
     def test_putting_pieces(self, pb, app, arbiter, board):
         for y in range(16):

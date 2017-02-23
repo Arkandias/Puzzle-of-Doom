@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 
 class UI(Frame):
     def createWidgets(self):
-        self.BATCHINPUT = Entry(self)
+        self.BATCHINPUT = Entry(self, width=7)
         self.BATCHINPUT.focus_set()
         self.BATCHINPUT.grid(row=19, column=0, columnspan=4)
 
@@ -41,14 +41,16 @@ class UI(Frame):
     def drawTable(self, board):
         for i in range(256):
             piece = board[i % 16, int(i / 16)]
-            if (piece is None):
-                continue
             self.placePiece(piece, i % 16, int(i / 16))
 
     def placePiece(self, piece, x, y):
         position = 16 * y + x
-        self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(-90*piece.nbofrightrotate))
-        self.labels[position].config(image=self.images[position])
+        if (piece is None):
+            self.images[position] = ImageTk.PhotoImage(self.pImages['blank'])
+            self.labels[position].config(image=self.images[position])
+        else:
+            self.images[position] = ImageTk.PhotoImage(self.pImages[piece.id].rotate(-90*piece.nbofrightrotate))
+            self.labels[position].config(image=self.images[position])
 
     def __init__(self):
         self.master = Tk()
