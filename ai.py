@@ -104,7 +104,7 @@ class Ai:
             for i in range (256):
                 x = int(list2[i][0] % 16)
                 y = int(list2[i][0] / 16)
-                if (board_son[x, y] is not None):
+                if (board_son[x, y] is None):
                     if (board2[x, y].placed == False):
                         board_son[x, y] = board2[x, y]
                         board_son[x, y].placed = True
@@ -112,12 +112,18 @@ class Ai:
 
 
             nb_lel = 0
+            tag = 1
             for i in range (256):
                 if (board_son[i % 16, int(i/16)] is None):
                     nb_lel += 1
                     list_no_placed = [x for x in pb.pieceslist if x.placed is False]
                     unplaced_pieces = len(list_no_placed)
                     if (unplaced_pieces == 0):
+                        print("that was not suppose to happen")
+                        tag = 0
+                        if (tag == 0):
+                            for k in range(256):
+                                print(pb.pieceslist[k].placed)
                         continue
                     if (unplaced_pieces == 1):
                         piecesnb = 0
@@ -207,7 +213,7 @@ class Ai:
         else:
             return None
 
-    def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
+    def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select, mutation):
         list_of_mutated = []
 
         for i in range (nb_mutate):
@@ -215,7 +221,10 @@ class Ai:
             board = boards[rand]
 
             board_to_append = copy.deepcopy(board)
-            for j in range (5):
+
+
+
+            for j in range (int ( mutation * 256 / 100)):
                 self.mutate_board_swap(board_to_append[0])
                 self.mutate_swap_turn_tab(board_to_append[1])
 
@@ -258,10 +267,20 @@ class Ai:
         nb_fitness = int (256 * fitness / 100)
         nb_tab = 100
         nb_very_best_value_save = 3
+        save_every_x_gen = 20
 
-        list_of_random_boards = self.create_random_boards(pb, app, arbiter, board, nb_boards)
-        list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
-        gen = 0
+        print (mutation * 256 / 100)
+
+        list_of_random_boards = []
+        to_load = self.load_last_log(pb)
+        if (to_load is None):
+            list_of_random_boards = self.create_random_boards(pb, app, arbiter, board, nb_boards)
+            list_of_random_boards.sort(key=operator.itemgetter(2), reverse=True)
+        else:
+            list_of_random_boards = to_load
+
+
+        gen = self.load_gen_max()
 
         for j in range(loop):
             gen += 1
@@ -275,7 +294,7 @@ class Ai:
             # print(list_of_crossover_boards[0][2])
 
             list_of_mutated_boards = self.mutate_some_boards(pb, app, arbiter, list_of_crossover_boards, nb_mutation,
-                                                             nb_selection)
+                                                             nb_selection, mutation)
             list_of_mutated_boards.sort(key=operator.itemgetter(2), reverse=True)
 
             self.set_pieces_to_rot(list_of_mutated_boards[0][1], pb)
@@ -303,6 +322,8 @@ class Ai:
             list_of_random_boards = best_of_lists
 
             self.save_result_only(gen, best_of_lists[0][2])
+            if ((gen % save_every_x_gen) == 0):
+                self.save(best_of_lists)
             # end of debug
 
             # end of crossover
