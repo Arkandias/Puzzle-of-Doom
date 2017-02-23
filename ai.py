@@ -3,6 +3,7 @@ import copy
 import operator
 import json
 import os
+import csv
 from board import Board
 
 from board import Board
@@ -167,6 +168,25 @@ class Ai:
                     board[x, y] = pb.pieceslist[id[x][y] - 1]
         return board
 
+    def save_result_only(self, gen, result):
+        if os.path.isfile("./logs/results.csv") is True:
+            flag = 'a'
+        else:
+            flag = 'w'
+        with open("./logs/results.csv", flag) as csvfile:
+            logwriter = csv.writer(csvfile)
+            logwriter.writerow([gen, result])
+
+    def load_gen_max(self):
+        last_gen = 0
+        if os.path.isfile("./logs/results.csv") is True:
+            with open("./logs/results.csv", 'r') as csvfile:
+                logreader = csv.reader(csvfile)
+                for row in logreader:
+                    if len(row) > 0:
+                        last_gen = int(row[0])
+        return last_gen
+
     def save(self, list_of_best):
         saved_list = copy.deepcopy(list_of_best)
         for nb, elem in enumerate(saved_list):
@@ -280,8 +300,6 @@ class Ai:
                 print(str(i + 1) + " best score: " + str(best_of_lists[i + 1][2]) + " at the gen n:" + str(gen))
 
             list_of_random_boards = best_of_lists
-            self.save(best_of_lists)
-            self.load_last_log(pb)
             # end of debug
 
             # end of crossover
