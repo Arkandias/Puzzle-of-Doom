@@ -18,7 +18,7 @@ def main():
     arbiter = Arbiter()
     board = Board()
 
-    app.setBatchMethod(lambda fitness, mutation: ai.main_function(pb, app, arbiter, board))
+    app.setBatchMethod(lambda loop, fitness, mutation: ai.main_function(pb, app, arbiter, board, lopp, fitness, mutation))
     # app.drawTable(board)
     app.drawTable(generatedSolvedPuzzle(pb))
     ### DO NOT FUCKING REMOVE THIS EITHER. ###

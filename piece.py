@@ -13,7 +13,6 @@ class Piece:
         self.nbofrightrotate = 0
         self.placed = False
         self.imgpath = None
-        self.fitness = 0
 
     def switch(self, x):
         return {

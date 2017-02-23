@@ -40,8 +40,7 @@ class UI(Frame):
         if self.MUTATIONINPUT.get() != '':
             mutation = int(self.MUTATIONINPUT.get())
         if (self.batchMethod):
-            for x in range(loop):
-                self.batchMethod(fitness, mutation)
+            self.batchMethod(loop, fitness, mutation)
 
     def setBatchMethod(self, fn):
         self.batchMethod = fn
