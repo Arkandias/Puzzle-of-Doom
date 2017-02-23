@@ -179,10 +179,12 @@ class Ai:
         if len(os.listdir("./logs/")) > 0:
             with open("./logs/" + str(len(os.listdir("./logs/")) - 1) + ".txt", 'r') as jsonfile:
                 loaded_list = json.load(jsonfile)
-        for nb, elem in enumerate(loaded_list):
-            board_to_object = self.change_id_to_board(elem[0], pb)
-            loaded_list[nb][0] = board_to_object
-        print(loaded_list)
+            for nb, elem in enumerate(loaded_list):
+                board_to_object = self.change_id_to_board(elem[0], pb)
+                loaded_list[nb][0] = board_to_object
+            return loaded_list
+        else
+            return None
 
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
         list_of_mutated = []
