@@ -126,6 +126,8 @@ class Ai:
 
 
             self.set_pieces_to_rot(rot_son, pb)
+
+
             list_of_crossover.append([board_son, rot_son, arbiter.nb_edge_match(board_son)])
         return list_of_crossover
 
@@ -141,6 +143,22 @@ class Ai:
 
         return list_of_best
 
+    def change_board_to_id(self, board):
+        x_tab = []
+        for x in range(16):
+            y_tab = []
+            for y in range(16):
+                y_tab.append(board[x, y].id)
+            x_tab.append(y_tab)
+
+        return x_tab
+
+    def change_id_to_board(self, id, pb):
+        board = Board()
+        for x in range(16):
+            for y in range(16):
+                board[x, y] = pb.pieceslist[id[x][y] + 1]
+
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
         list_of_mutated = []
 
@@ -155,6 +173,9 @@ class Ai:
 
             self.set_pieces_to_rot(board_to_append[1], pb)
             board_to_append[2] = arbiter.nb_edge_match(board_to_append[0])
+
+
+
             list_of_mutated.append(board_to_append)
         return list_of_mutated
 
@@ -182,12 +203,11 @@ class Ai:
         return list_of_boards
 
 
-
     def main_function(self, pb, app, arbiter, board):
 
         nb_boards = 100
         nb_selection = 10
-        nb_mutation = 20
+        nb_mutation = 100
         nb_fitness = 128
         nb_tab = 100
         nb_very_best_value_save = 3
