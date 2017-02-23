@@ -183,7 +183,7 @@ class Ai:
                 board_to_object = self.change_id_to_board(elem[0], pb)
                 loaded_list[nb][0] = board_to_object
             return loaded_list
-        else
+        else:
             return None
 
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
