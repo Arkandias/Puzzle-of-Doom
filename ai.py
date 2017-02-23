@@ -1,6 +1,8 @@
 import random
 import copy
 import operator
+import json
+import os
 from board import Board
 
 from board import Board
@@ -165,6 +167,23 @@ class Ai:
                     board[x, y] = pb.pieceslist[id[x][y] - 1]
         return board
 
+    def save(self, list_of_best):
+        saved_list = copy.deepcopy(list_of_best)
+        for nb, elem in enumerate(saved_list):
+            board_to_list = self.change_board_to_id(elem[0])
+            saved_list[nb][0] = board_to_list
+        with open("./logs/" + str(len(os.listdir("./logs/"))) + ".txt", 'w') as jsonfile:
+            json.dump(saved_list, jsonfile)
+
+    def load_last_log(self, pb):
+        if len(os.listdir("./logs/")) > 0:
+            with open("./logs/" + str(len(os.listdir("./logs/")) - 1) + ".txt", 'r') as jsonfile:
+                loaded_list = json.load(jsonfile)
+        for nb, elem in enumerate(loaded_list):
+            board_to_object = self.change_id_to_board(elem[0], pb)
+            loaded_list[nb][0] = board_to_object
+        print(loaded_list)
+
     def mutate_some_boards(self, pb, app, arbiter, boards, nb_mutate, nb_select):
         list_of_mutated = []
 
@@ -259,7 +278,8 @@ class Ai:
                 print(str(i + 1) + " best score: " + str(best_of_lists[i + 1][2]) + " at the gen n:" + str(gen))
 
             list_of_random_boards = best_of_lists
-
+            self.save(best_of_lists)
+            self.load_last_log(pb)
             # end of debug
 
             # end of crossover
