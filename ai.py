@@ -92,21 +92,23 @@ class Ai:
             for i in range (nb_fitness):
                 x = int(list1[i][0] % 16)
                 y = int(list1[i][0] / 16)
-                board_son[x, y] = board1[x, y]
-                board_son[x, y].placed = True
-                rot_son[int(x % 16 + y * 16)] = rot1[int(x % 16 + y * 16)]
+                if (board1[x, y].placed == False):
+                    board_son[x, y] = board1[x, y]
+                    board_son[x, y].placed = True
+                    rot_son[int(x % 16 + y * 16)] = rot1[int(x % 16 + y * 16)]
 
 
 
             board2 = list_of_random_boards[rand2][0]
             rot2 = list_of_random_boards[rand2][1]
-            for i in range (nb_fitness):
+            for i in range (256):
                 x = int(list2[i][0] % 16)
                 y = int(list2[i][0] / 16)
                 if (board_son[x, y] is not None):
-                    board_son[x, y] = board2[x, y]
-                    board_son[x, y].placed = True
-                    rot_son[int(x % 16 + y * 16)] = rot2[int(x % 16 + y * 16)]
+                    if (board2[x, y].placed == False):
+                        board_son[x, y] = board2[x, y]
+                        board_son[x, y].placed = True
+                        rot_son[int(x % 16 + y * 16)] = rot2[int(x % 16 + y * 16)]
 
 
             nb_lel = 0
@@ -116,7 +118,6 @@ class Ai:
                     list_no_placed = [x for x in pb.pieceslist if x.placed is False]
                     unplaced_pieces = len(list_no_placed)
                     if (unplaced_pieces == 0):
-                        print("placed all")
                         continue
                     if (unplaced_pieces == 1):
                         piecesnb = 0
@@ -300,6 +301,8 @@ class Ai:
                 print(str(i + 1) + " best score: " + str(best_of_lists[i + 1][2]) + " at the gen n:" + str(gen))
 
             list_of_random_boards = best_of_lists
+
+            self.save_result_only(gen, best_of_lists[0][2])
             # end of debug
 
             # end of crossover
