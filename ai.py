@@ -176,18 +176,18 @@ class Ai:
         return board
 
     def save_result_only(self, gen, result):
-        if os.path.isfile("./logs/results.csv") is True:
+        if os.path.isfile("./results.csv") is True:
             flag = 'a'
         else:
             flag = 'w'
-        with open("./logs/results.csv", flag) as csvfile:
+        with open("./results.csv", flag) as csvfile:
             logwriter = csv.writer(csvfile)
             logwriter.writerow([gen, result])
 
     def load_gen_max(self):
         last_gen = 0
-        if os.path.isfile("./logs/results.csv") is True:
-            with open("./logs/results.csv", 'r') as csvfile:
+        if os.path.isfile("./results.csv") is True:
+            with open("./results.csv", 'r') as csvfile:
                 logreader = csv.reader(csvfile)
                 for row in logreader:
                     if len(row) > 0:
